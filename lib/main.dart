@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/pages/login_page.dart';
 import 'package:instagram/pages/splash_page.dart';
+import 'package:instagram/pages/timeline_page.dart';
 
 void main() {
   runApp(App());
@@ -14,6 +15,7 @@ class App extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         "/": (context) => SplashPage(),
         "/login": (context) => LoginPage(),
+        "/timeline": (context) => TimelinePage(),
       },
       debugShowCheckedModeBanner: false,
     );

@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:instagram/repositories/auth_repository.dart';
 import 'package:instagram/widgets/my_flat_button.dart';
 import 'package:instagram/widgets/my_text_field.dart';
 
 class LoginPage extends StatefulWidget {
+  final AuthRepository _auth = AuthRepository.instance;
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   String _email = "";
   String _password = "";
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 40),
@@ -24,7 +29,8 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image(
-                  image: AssetImage("assets/images/Instagram_logo_wordmark.png"),
+                  image:
+                      AssetImage("assets/images/Instagram_logo_wordmark.png"),
                   width: 210,
                 ),
                 Container(
@@ -70,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: MyFlatButton(
                       "Login",
                       onPressed: () {
+                        login();
                       },
                     ),
                   ),
@@ -81,6 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: MyFlatButton(
                       "Sign up",
                       onPressed: () {
+                        signUp();
                       },
                     ),
                   ),
@@ -89,6 +97,33 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  login() async {
+    try {
+      String uid = await widget._auth.login(_email, _password);
+      Navigator.pushReplacementNamed(context, "/timeline");
+    } on PlatformException catch (e) {
+      showSnackBar(e.message);
+    }
+  }
+
+  signUp() async {
+    try {
+      String uid = await widget._auth.signUp(_email, _password);
+      debugPrint(uid);
+      showSnackBar("all good");
+    } on PlatformException catch (e) {
+      showSnackBar(e.message);
+    }
+  }
+
+  showSnackBar(String message) {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text(message),
       ),
     );
   }
