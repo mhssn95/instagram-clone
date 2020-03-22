@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram/pages/login_page.dart';
 import 'package:instagram/pages/splash_page.dart';
 
 void main() {
@@ -10,7 +11,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Instagram',
-      home: SplashPage(),
+      routes: <String, WidgetBuilder>{
+        "/": (context) => SplashPage(),
+        "/login": (context) => LoginPage(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }
